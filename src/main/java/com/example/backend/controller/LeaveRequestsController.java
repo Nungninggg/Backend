@@ -1,5 +1,6 @@
 package com.example.backend.controller;
 
+import com.example.backend.Dto.LeaveRequestInput;
 import com.example.backend.entity.EntityLeaveRequests;
 import com.example.backend.service.LeaveRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,15 +10,17 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/leave_requests")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LeaveRequestsController {
 
     @Autowired
     private LeaveRequestService leaveRequestService;
 
     @PostMapping
-    public EntityLeaveRequests createRequest(@RequestBody EntityLeaveRequests request) {
-        return leaveRequestService.createLeaveRequest(request);
+    public EntityLeaveRequests createRequest(@RequestBody LeaveRequestInput input) {
+        return leaveRequestService.createLeaveRequest(input);
     }
+
 
 
     @GetMapping

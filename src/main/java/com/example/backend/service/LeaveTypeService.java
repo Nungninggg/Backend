@@ -18,7 +18,8 @@ public class LeaveTypeService {
     }
 
     public EntityLeaveTypes getLeaveTypeById(Long id) {
-        return leaveTypeRepository.findById(id);
+        return leaveTypeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Leave type not found"));
     }
 
     public EntityLeaveTypes createOrUpdateLeaveType(EntityLeaveTypes leaveType) {

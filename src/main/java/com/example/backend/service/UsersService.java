@@ -11,14 +11,16 @@ import java.util.List;
 public class UsersService {
 
     @Autowired
-    private UsersRepository userRepository;
+    private UsersRepository userRepository;  // ต้องเรียก userRepository ให้ตรง
 
     public List<EntityUsers> getAllUsers() {
         return userRepository.findAll();
     }
 
     public EntityUsers getUserById(Long id) {
-        return userRepository.findById(id);
+        // ใช้ orElseThrow() กับ Optional
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public EntityUsers createUser(EntityUsers user) {
@@ -26,15 +28,15 @@ public class UsersService {
     }
 
     public EntityUsers updateUser(Long id, EntityUsers user) {
-        EntityUsers existing = userRepository.findById(id);
-        if (existing != null) {
-            existing.setUsername(user.getUsername());
-            existing.setEmail(user.getEmail());
-            existing.setRole(user.getRole());
-            existing.setDepartment(user.getDepartment());
-            return userRepository.save(existing);
-        }
-        return null;
+        // ใช้ Optional และ orElseThrow เพื่อดึง EntityUsers
+        EntityUsers existing = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existing.setUsername(user.getUsername());
+        existing.setEmail(user.getEmail());
+        existing.setRole(user.getRole());
+        existing.setDepartment(user.getDepartment());
+        return userRepository.save(existing);
     }
 
     public void deleteUser(Long id) {
